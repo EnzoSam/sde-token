@@ -31,6 +31,7 @@ contract MyExchange {
     }
     
     function buy(uint256 _amount) public {
+        require(msg.value == )
         uint256 fee = (_amount * feePercent) / 100;
         uint256 cost = _amount + fee;
         require(balances[msg.sender] >= cost, "Saldo insuficiente");

@@ -16,11 +16,12 @@ contract MyToken is IERC20 {
     string public constant name = "Same Token";
     string public constant symbol = "SDE";
     uint8 public constant decimals = 18;
-    uint256 private constant _totalSupply = 1000000 * 10 ** uint256(decimals);
+    uint256 private constant _totalSupply;
     mapping (address => uint256) private _balances;
     mapping (address => mapping (address => uint256)) private _allowances;
     
     constructor() {
+        _totalSupply = mul(1000000, 10) ** uint256(decimals);
         _balances[msg.sender] = _totalSupply;
         emit Transfer(address(0), msg.sender, _totalSupply);
     }
@@ -54,8 +55,8 @@ contract MyToken is IERC20 {
     }
     
     function _transfer(address sender, address recipient, uint256 amount) private {
-        require(sender != address(0), "Direccion de origen inválida");
-        require(recipient != address(0), "Direccion de destino inválida");
+        require(sender != address(0), "Invalid sender");
+        require(recipient != address(0), "Invalid recipient");
         require(_balances[sender] >= amount, "Saldo insuficiente");
         _balances[sender] -= amount;
         _balances[recipient] += amount;
@@ -63,9 +64,22 @@ contract MyToken is IERC20 {
     }
     
     function _approve(address owner, address spender, uint256 amount) private {
-        require(owner != address(0), "No aprobado desde la dirección cero");
-        require(spender != address(0), "No aprobado a la dirección cero");
+        require(owner != address(0), "Address no aprove");
+        require(spender != address(0), "Spender no aprove");
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
+    }
+
+    function mul(uint256 a, uint256  b) internal pure returns(uint256)
+    {
+        if(a == 0)
+        {
+            return 0;
+        }
+
+        uint256 c = a * b;
+        require(c /a == b);
+
+        return c;
     }
 }
