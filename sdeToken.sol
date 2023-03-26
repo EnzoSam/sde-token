@@ -14,7 +14,7 @@ contract SDEToken {
         name = tokenName;
         symbol = tokenSymbol;
         decimals = tokenDecimals;
-        totalSupply = initialSupply * 10 ** uint256(decimals);
+        totalSupply = initialSupply*10 ** uint256(decimals);
         _balances[msg.sender] = totalSupply;
     }
 
@@ -56,6 +56,19 @@ contract SDEToken {
         require(spender != address(0), "ERC20: approve to the zero address");
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
+    }
+
+    function mul(uint256 a, uint256  b) internal pure returns(uint256)
+    {
+        if(a == 0)
+        {
+            return 0;
+        }
+
+        uint256 c = a * b;
+        require(c /a == b);
+
+        return c;
     }
 
     event Transfer(address indexed from, address indexed to, uint256 value);
